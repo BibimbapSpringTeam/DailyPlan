@@ -16,8 +16,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.eclipse.persistence:eclipselink:4.0.1'
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
 
     //h2
     runtimeOnly 'com.h2database:h2'
