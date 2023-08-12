@@ -40,10 +40,19 @@ public class ToDo {
     private String alarmEndTime;
 
     @Builder
-    public ToDo(boolean isComplete, String title, String alarmStartTime, String alarmEndTime) {
-        this.isComplete = isComplete;
+    public ToDo(DailyPlan dailyPlan, String title, String alarmStartTime, String alarmEndTime, Category category) {
+        this.dailyPlan = dailyPlan;
+        this.isComplete = false;
         this.title = title;
         this.alarmStartTime = alarmStartTime;
         this.alarmEndTime = alarmEndTime;
+        this.category = category;
+    }
+
+    public void update(String title, String alarmStartTime, String alarmEndTime, Category category) {
+        this.title = title;
+        this.alarmStartTime = alarmStartTime;
+        this.alarmEndTime = alarmEndTime;
+        this.category = category;
     }
 }

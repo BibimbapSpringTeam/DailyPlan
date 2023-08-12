@@ -2,7 +2,8 @@ package com.springboot.domain.toDo.dto;
 
 import com.springboot.domain.category.entity.Category;
 import com.springboot.domain.category.entity.CategoryCode;
-import jakarta.persistence.Column;
+import com.springboot.domain.toDo.entity.ToDo;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,25 +15,21 @@ public class ToDoResponseDto {
 
     private String title;
 
+    private Boolean toDoStatusCode;
+
     private String alarmStartTime;
 
     private String alarmEndTime;
 
-    private CategoryCode categoryCode;
+    private String categoryCode;
 
-    @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
-    private String alarmStartTime;
-
-    @Column(nullable = false)
-    private String alarmEndTime;
-
+    @Builder
+    public ToDoResponseDto(ToDo entity) {
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.toDoStatusCode = entity.isComplete();
+        this.alarmStartTime = entity.getAlarmStartTime();
+        this.alarmEndTime = entity.getAlarmEndTime();
+        this.categoryCode = entity.getCategory().getCategoryCode().getCode();
+    }
 }
-        "id": 1,
-        "title": "string",
-        "toDoStatusCode": "C",
-        "alarmStartTime": "string",
-        "alarmEndTime": "string",
-        "categoryCode": "C001"

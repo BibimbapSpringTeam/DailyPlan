@@ -32,14 +32,17 @@ public class Category {
     @Column(nullable = false)
     private CategoryCode categoryCode;
 
-    @Column(nullable = false)
+    @Column
     private BigInteger countByToDo;
 
-    @Column(nullable = false)
+    @Column
     private BigInteger successToDoCount;
 
     @Builder
-    public Category( CategoryCode categoryCode) {
+    public Category(Member member, CategoryCode categoryCode) {
+        this.member = member;
         this.categoryCode = categoryCode;
+        this.countByToDo = BigInteger.valueOf(toDos.size());
+        this.setSuccessToDoCount(BigInteger.ZERO);
     }
 }
