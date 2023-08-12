@@ -9,21 +9,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor    //final이 붙은 필드에 대해 생성자 자동생성
 //@Controller
 @RestController
+@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/member")
+    @PostMapping("/")
     public MemberResponseDto post(@RequestBody MemberLogInRequestDto requestDto) {
         return memberService.logIn(requestDto);
     }
 
-    @GetMapping("/member/{member_id}")
+    @GetMapping("/{member_id}")
     public MemberResponseDto get(@PathVariable Long member_id) {
         return memberService.get(member_id);
     }
 
-    @GetMapping("/member/{email}")
+    @GetMapping("/email/{email}")
     public MemberResponseDto getEmail(@PathVariable String email) {
         return memberService.getEmail(email);
     }

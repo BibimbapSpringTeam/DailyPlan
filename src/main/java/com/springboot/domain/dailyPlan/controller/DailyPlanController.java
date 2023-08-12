@@ -10,27 +10,28 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/dailyplan")
 public class DailyPlanController {
 
     private final DailyPlanService dailyPlanService;
 
-    @PostMapping("/dailyplan/{member_id}/{date}")
+    @PostMapping("/{member_id}/{date}")
     public Long post(@PathVariable Long member_id, String date) {
         return dailyPlanService.post(member_id, date);
     }
 
-    @GetMapping("/dailyplan/{dailyPlanId}")
+    @GetMapping("/{dailyPlanId}")
     public DailyPlanResponseDto get(@PathVariable Long dailyPlanId) {
         return dailyPlanService.get(dailyPlanId);
     }
 
-    @DeleteMapping("/dailyplan/{dailyPlanId}")
+    @DeleteMapping("/{dailyPlanId}")
     public Long delete(@PathVariable Long dailyPlanId) {
         dailyPlanService.delete(dailyPlanId);
         return dailyPlanId;
     }
 
-    @GetMapping("/dailyplan/{memberId}/{yearMonth}")
+    @GetMapping("/{memberId}/{yearMonth}")
     public List<DailyPlanListResponseDto> getList(@PathVariable Long memberId, @PathVariable String yearMonth) {
         return dailyPlanService.getList(memberId, yearMonth);
     }

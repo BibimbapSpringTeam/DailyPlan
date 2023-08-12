@@ -2,7 +2,9 @@ package com.springboot.domain.member.dto;
 
 import com.springboot.domain.member.entity.Member;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class MemberResponseDto {
     private Long id;
     private String name;
