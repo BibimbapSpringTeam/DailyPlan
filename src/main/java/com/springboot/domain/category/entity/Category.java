@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,18 +30,16 @@ public class Category {
     List<ToDo> toDos = new ArrayList<>();
 
     @Column(nullable = false)
-    private long successDailyPlanCount;
-
-    @Column(nullable = false)
     private CategoryCode categoryCode;
 
     @Column(nullable = false)
-    private long countByDailyPlan;
+    private BigInteger countByToDo;
+
+    @Column(nullable = false)
+    private BigInteger successToDoCount;
 
     @Builder
-    public Category(long successDailyPlanCount, CategoryCode categoryCode, long countByDailyPlan) {
-        this.successDailyPlanCount = successDailyPlanCount;
+    public Category( CategoryCode categoryCode) {
         this.categoryCode = categoryCode;
-        this.countByDailyPlan = countByDailyPlan;
     }
 }
