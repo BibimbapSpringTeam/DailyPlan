@@ -1,10 +1,14 @@
 package com.springboot.domain.member.controller;
 
-import com.springboot.domain.member.dto.MemberLogInRequestDto;
+import com.springboot.domain.member.dto.MemberRequestDto;
 import com.springboot.domain.member.dto.MemberResponseDto;
 import com.springboot.domain.member.service.MemberService;
+import com.springboot.global.result.ResultResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.springboot.global.result.ResultCode.MEMBER_SAVE_OR_UPDATE_SUCCESS;
 
 @RequiredArgsConstructor    //final이 붙은 필드에 대해 생성자 자동생성
 //@Controller
@@ -15,8 +19,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/")
-    public MemberResponseDto post(@RequestBody MemberLogInRequestDto requestDto) {
-        return memberService.logIn(requestDto);
+    public ResponseEntity<ResultResponse> post(@RequestBody MemberRequestDto requestDto) {
+         MemberResponseDto responseDto = memberService.post(requestDto);
+         return ResponseEntity.ok(ResultResponse.of(MEMBER_SAVE_OR_UPDATE_SUCCESS, responseDto));
     }
 
     @GetMapping("/{member_id}")
