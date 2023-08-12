@@ -16,6 +16,6 @@ public class DailyPlanResponseDto {
     public DailyPlanResponseDto(DailyPlan entity) {
         this.id = entity.getId();
         this.yearMonth = entity.getYearMonth();
-        this.date = entity.getDate().substring(6);;
+        this.date = entity.getDate().substring(6);
     }
 }

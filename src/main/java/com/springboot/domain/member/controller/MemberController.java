@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+
 import static com.springboot.global.result.ResultCode.*;
 
 @RequiredArgsConstructor    //final이 붙은 필드에 대해 생성자 자동생성
@@ -25,7 +27,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member_id}")
-    public ResponseEntity<ResultResponse> get(@PathVariable Long member_id) {
+    public ResponseEntity<ResultResponse> get(@PathVariable BigInteger member_id) {
         MemberResponseDto responseDto = memberService.get(member_id);
         return ResponseEntity.ok(ResultResponse.of(GET_USERPROFILE_SUCCESS, responseDto));
     }
