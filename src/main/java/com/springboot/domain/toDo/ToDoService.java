@@ -31,12 +31,15 @@ public class ToDoService {
     }
 
     @Transactional
-    public long update(Long todoId, ToDoUpdateDto updateDto) {
+    public boolean update(Long todoId, ToDoUpdateDto updateDto) {
     }
 
     public boolean delete(Long todoId) {
     }
 
     public List<ToDoResponseDto> getToDoList(Long dailyPlanId) {
+    }
+
+    public boolean complete(Long todoId) {
     }
 }

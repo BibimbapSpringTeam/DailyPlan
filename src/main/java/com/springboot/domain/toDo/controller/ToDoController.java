@@ -32,7 +32,7 @@ public class ToDoController {
         }
 
         @PutMapping("/todo/{todoId}")
-        public long update(@PathVariable Long todoId, @RequestBody ToDoUpdateDto updateDto) {
+        public boolean update(@PathVariable Long todoId, @RequestBody ToDoUpdateDto updateDto) {
             return toDoService.update(todoId, updateDto);
         }
 
@@ -48,7 +48,7 @@ public class ToDoController {
         }
 
         @PostMapping("/todo/complete/{todoId}")
-        public Long completeTodo(@PathVariable Long todoId) {
+        public boolean completeTodo(@PathVariable Long todoId) {
             return toDoService.complete(todoId);
         }
 

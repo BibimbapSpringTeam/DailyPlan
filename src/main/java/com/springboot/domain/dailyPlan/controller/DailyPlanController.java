@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import static com.springboot.global.result.ResultCode.*;
@@ -19,10 +20,10 @@ public class DailyPlanController {
     private final DailyPlanService dailyPlanService;
 
     @PostMapping("/{member_id}/{date}")
-    public ResponseEntity<ResultResponse> post(@PathVariable Long member_id, String date) {
+    public ResponseEntity<ResultResponse> post(@PathVariable BigInteger member_id, String date) {
         DailyPlanResponseDto responseDto = dailyPlanService.post(member_id, date);
 
-        return ResponseEntity.ok(ResultResponse.of(DAILYPLAN_SAVE_SUCCESS, responseDto));
+        return ResponseEntity.ok(ResultResponse.of(DAILYPLAN_SAVE_SUCCESS, responseDto.getDate()));
     }
 
     @GetMapping("/{dailyPlanId}")
@@ -38,7 +39,7 @@ public class DailyPlanController {
     }
 
     @GetMapping("/{memberId}/{yearMonth}")
-    public ResponseEntity<ResultResponse> getList(@PathVariable Long memberId, @PathVariable String yearMonth) {
+    public ResponseEntity<ResultResponse> getList(@PathVariable BigInteger memberId, @PathVariable String yearMonth) {
         List<DailyPlanResponseDto> responseDto = dailyPlanService.getList(memberId, yearMonth);
 
         return ResponseEntity.ok(ResultResponse.of(GET_MONTH_DAILYPLAN_SUCCESS, responseDto));

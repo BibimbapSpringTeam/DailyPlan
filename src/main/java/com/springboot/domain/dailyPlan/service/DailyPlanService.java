@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +25,13 @@ public class DailyPlanService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public DailyPlanResponseDto post(Long memberId, String date) {
+    public DailyPlanResponseDto post(BigInteger memberId, String date) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
         if(member.getDailyPlans().stream()
                 .anyMatch(dailyPlan -> dailyPlan.getDate().equals(date)))
-            throw new EntityAlreadyExistException(DAILYPLAN_ALREADY_EXIST, "이미 데일리 플랜을 작성하였습니다. PUT으로 update 해주세요");
+            throw new EntityAlreadyExistException(DAILYPLAN_ALREADY_EXIST, "해당 날짜에 데일리 플랜이 이미 존재합니다, PUT으로 update해주세요 : " + date);
 
         return new DailyPlanResponseDto(dailyPlanRepository.save(new DailyPlan(date, member)));
     }
@@ -54,7 +55,7 @@ public class DailyPlanService {
     }
 
     @Transactional
-    public List<DailyPlanResponseDto> getList(Long memberId, String yearMonth) {
+    public List<DailyPlanResponseDto> getList(BigInteger memberId, String yearMonth) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 

@@ -20,7 +20,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private BigInteger id;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
