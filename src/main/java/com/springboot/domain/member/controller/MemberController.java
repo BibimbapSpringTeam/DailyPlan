@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.springboot.global.result.ResultCode.MEMBER_SAVE_OR_UPDATE_SUCCESS;
+import static com.springboot.global.result.ResultCode.*;
 
 @RequiredArgsConstructor    //final이 붙은 필드에 대해 생성자 자동생성
 //@Controller
@@ -25,13 +25,15 @@ public class MemberController {
     }
 
     @GetMapping("/{member_id}")
-    public MemberResponseDto get(@PathVariable Long member_id) {
-        return memberService.get(member_id);
+    public ResponseEntity<ResultResponse> get(@PathVariable Long member_id) {
+        MemberResponseDto responseDto = memberService.get(member_id);
+        return ResponseEntity.ok(ResultResponse.of(GET_USERPROFILE_SUCCESS, responseDto));
     }
 
     @GetMapping("/email/{email}")
-    public MemberResponseDto getEmail(@PathVariable String email) {
-        return memberService.getEmail(email);
+    public ResponseEntity<ResultResponse> getEmail(@PathVariable String email) {
+        MemberResponseDto responseDto = memberService.getEmail(email);
+        return ResponseEntity.ok(ResultResponse.of(GET_USERPROFILE_SUCCESS, responseDto));
     }
 
 }
