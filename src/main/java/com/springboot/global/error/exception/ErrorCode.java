@@ -30,7 +30,8 @@ public enum ErrorCode {
     TODOLIST_NOT_FOUND(400, "T001", "존재 하지 않는 투두리스트입니다"),
 
     //Category
-    CATEGORYCODE_NOT_FOUND(400, "T001", "존재 하지 않는 카테고리입니다"),
+    CATEGORYCODE_NOT_FOUND(400, "C001", "존재 하지 않는 카테고리입니다."),
+    CATEGORYLIST_NOT_FOUND(400, "C002", "카테고리 리스트가 존재하지 않습니다."),
     ;
 
     private final int status;

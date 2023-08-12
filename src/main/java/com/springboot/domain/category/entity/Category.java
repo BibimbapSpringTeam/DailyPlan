@@ -20,7 +20,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -42,7 +42,13 @@ public class Category {
     public Category(Member member, CategoryCode categoryCode) {
         this.member = member;
         this.categoryCode = categoryCode;
-        this.countByToDo = BigInteger.valueOf(toDos.size());
-        this.setSuccessToDoCount(BigInteger.ZERO);
+        this.countByToDo = BigInteger.ONE;
+        this.successToDoCount = BigInteger.ZERO;
     }
+
+    public String getCodeName() {
+        return categoryCode.getTitle();
+    }
+
+
 }

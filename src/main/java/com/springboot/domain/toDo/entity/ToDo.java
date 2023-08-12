@@ -49,10 +49,9 @@ public class ToDo {
         this.category = category;
     }
 
-    public void update(String title, String alarmStartTime, String alarmEndTime, Category category) {
+    public void update(String title, String alarmStartTime, String alarmEndTime) {
         this.title = title;
         this.alarmStartTime = alarmStartTime;
         this.alarmEndTime = alarmEndTime;
-        this.category = category;
     }
 }

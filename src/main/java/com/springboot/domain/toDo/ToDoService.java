@@ -47,10 +47,32 @@ public class ToDoService {
         Member member = dailyPlan.getMember();
 
         CategoryCode code = CategoryCode.find(requestDto.getCategoryCode());
-        Category category = categoryRepository.save(new Category(member, code));
-        toDo.setCategory(category);
+
+        // 카테고리 존재 확인하는 함수
+        toDo.setCategory(findCategoryFromMember(code, member));
 
         return toDoRepository.save(toDo).getId();
+    }
+
+    private Category findCategoryFromMember(CategoryCode code, Member member) {
+
+        Category category = null;
+        // 카테고리가 존재하지 않을 시 생성
+        if(!member.getCategories().stream()
+                .anyMatch(c -> c.getCategoryCode().equals(code))) {
+            category = categoryRepository.save(new Category(member, code));
+        } else {
+            //카테고리가 존재할 시 해당 코드 카테고리 찾기
+            List<Category> categoryList = member.getCategories().stream()
+                    .filter(entity -> entity.getCategoryCode().equals(code))
+                    .collect(Collectors.toList());
+            if(!categoryList.isEmpty()) {
+                category = categoryList.get(0);
+                //카테고리 투두 + 1
+                category.setCountByToDo(category.getCountByToDo().add(BigInteger.ONE));
+            }
+        }
+        return category;
     }
 
     @Transactional
@@ -68,33 +90,61 @@ public class ToDoService {
         ToDo toDo = toDoRepository.findById(todoId)
                 .orElseThrow(() -> new EntityNotFoundException(TODOLIST_NOT_FOUND, "해당 Id에 해당하는 투두리스트가 없습니다 : " + todoId));
 
-
+        //upadate로 들어온 코드가 valid한지 확인
         CategoryCode code = CategoryCode.find(updateDto.getAfterCategoryCode());
-        Category category = toDo.getCategory();
-        category.setCategoryCode(code);
 
+        Category beforeCategory = toDo.getCategory();
         DailyPlan dailyPlan = toDo.getDailyPlan();
         Member member = dailyPlan.getMember();
 
-        if (!member.getCategories().contains(code)) {
-            throw new CodeNotFoundException(CATEGORYCODE_NOT_FOUND,
-                    "해당 유저 Id ( "+ member.getId() + " )는 "+ code.getCode() + "에 해당하는 카테고리를 가지고 있지 않습니다.");
+        //update로 들어온 코드와 toDo에 저장되어있는 코드가 동일하지 않을 시에만 업데이트
+        if(beforeCategory.getCategoryCode() != code) {
+            //현재 카테고리의 toDoCount 줄이기
+            beforeCategory.setCountByToDo(beforeCategory.getCountByToDo().subtract(BigInteger.ONE));
 
+
+            Category category = findCategoryFromMember(code, member);
+            //현재 카테고리가 success 였을 때 successToDoCount 줄이기
+            if (toDo.isComplete()) {
+                beforeCategory.setSuccessToDoCount(beforeCategory.getSuccessToDoCount().subtract(BigInteger.ONE));
+                category.setSuccessToDoCount(category.getSuccessToDoCount().add(BigInteger.ONE));
+            }
+
+            if (beforeCategory.getCountByToDo() == BigInteger.ZERO) {
+                categoryRepository.delete(beforeCategory);
+            }
+
+            toDo.setCategory(category);
         }
 
-        toDo.update(updateDto.getTitle(), updateDto.getAlarmStartTime(), updateDto.getAlarmEndTime(), category);
+
+        toDo.update(updateDto.getTitle(), updateDto.getAlarmStartTime(), updateDto.getAlarmEndTime());
 
         return true;
     }
+
+
     @Transactional
     public boolean delete(Long todoId) {
 
         ToDo toDo = toDoRepository.findById(todoId)
                 .orElseThrow(() -> new EntityNotFoundException(TODOLIST_NOT_FOUND, "해당 Id에 해당하는 투두리스트가 없습니다 : " + todoId));
 
+
         Category category = toDo.getCategory();
+
+        //카테고리 투두 - 1
+        category.setCountByToDo(category.getCountByToDo().subtract(BigInteger.ONE));
+
+        //success 였을 경우 - 1
+        if (toDo.isComplete()) {
+            category.setSuccessToDoCount(category.getSuccessToDoCount().subtract(BigInteger.ONE));
+        }
+
+        if (category.getCountByToDo() == BigInteger.ZERO) {
+            categoryRepository.delete(category);
+        }
         toDoRepository.delete(toDo);
-        categoryRepository.delete(category);
 
         return true;
     }
@@ -120,15 +170,23 @@ public class ToDoService {
         ToDo toDo = toDoRepository.findById(todoId)
                 .orElseThrow(() -> new EntityNotFoundException(TODOLIST_NOT_FOUND, "해당 Id에 해당하는 투두리스트가 없습니다 : " + todoId));
 
+
+        if(!toDo.isComplete()) {
+            Category category = toDo.getCategory();
+            category.setSuccessToDoCount(category.getSuccessToDoCount().add(BigInteger.valueOf(1)));
+        }
         toDo.setComplete(true);
-        Category category = toDo.getCategory();
-        category.setSuccessToDoCount(category.getSuccessToDoCount().add(BigInteger.valueOf(1)));
         return true;
     }
     @Transactional
     public boolean failed(Long todoId) {
         ToDo toDo = toDoRepository.findById(todoId)
                 .orElseThrow(() -> new EntityNotFoundException(TODOLIST_NOT_FOUND, "해당 Id에 해당하는 투두리스트가 없습니다 : " + todoId));
+
+        if(toDo.isComplete()) {
+            Category category = toDo.getCategory();
+            category.setSuccessToDoCount(category.getSuccessToDoCount().subtract(BigInteger.valueOf(1)));
+        }
         toDo.setComplete(false);
         return true;
     }
