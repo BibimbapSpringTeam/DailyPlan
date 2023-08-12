@@ -28,7 +28,7 @@ public class ToDoController {
 
         @GetMapping("/todo/{todoId}")
         public ToDoResponseDto findById(@PathVariable Long todoId) {
-            return toDoService.get(todoId);
+            return toDoService.findById(todoId);
         }
 
         @PutMapping("/todo/{todoId}")

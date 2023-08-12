@@ -34,7 +34,7 @@ public class ToDoService {
     public long update(Long todoId, ToDoUpdateDto updateDto) {
     }
 
-    public void delete(Long todoId) {
+    public boolean delete(Long todoId) {
     }
 
     public List<ToDoResponseDto> getToDoList(Long dailyPlanId) {
