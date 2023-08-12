@@ -27,6 +27,7 @@ public class DailyPlanService {
         return dailyPlanRepository.save(new DailyPlan(date, member)).getId();
     }
 
+    @Transactional
     public DailyPlanResponseDto get(Long dailyPlanId) {
         DailyPlan entity = dailyPlanRepository.findById(dailyPlanId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 데일리 플랜이 없습니다. id="+ dailyPlanId));
@@ -34,12 +35,14 @@ public class DailyPlanService {
         return new DailyPlanResponseDto(entity);
     }
 
+    @Transactional
     public void delete(Long dailyPlanId) {
         DailyPlan dailyPlan = dailyPlanRepository.findById(dailyPlanId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 데일리 플랜이 없습니다. id="+ dailyPlanId));
         dailyPlanRepository.delete(dailyPlan);
     }
 
+    @Transactional
     public List<DailyPlanListResponseDto> getList(Long memberId, String yearMonth) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id를 가진 member가 없습니다. id=" + memberId));
