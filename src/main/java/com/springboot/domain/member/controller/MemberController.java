@@ -1,11 +1,9 @@
 package com.springboot.domain.member.controller;
 
-import com.springboot.domain.dailyPlan.dto.DailyPlanResponseDto;
 import com.springboot.domain.member.dto.MemberLogInRequestDto;
 import com.springboot.domain.member.dto.MemberResponseDto;
 import com.springboot.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor    //final이 붙은 필드에 대해 생성자 자동생성

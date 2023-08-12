@@ -1,15 +1,7 @@
 package com.springboot.domain.member.dto;
 
-import com.springboot.domain.category.entity.Category;
-import com.springboot.domain.dailyPlan.entity.DailyPlan;
-import com.springboot.domain.follow.entity.Follow;
 import com.springboot.domain.member.entity.Member;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
 import lombok.Builder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MemberResponseDto {
     private Long id;
