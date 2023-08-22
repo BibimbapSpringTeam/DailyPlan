@@ -1,44 +1,45 @@
 package com.springboot.domain.dailyPlan.entity;
 
+import com.springboot.domain.BaseTimeEntity;
 import com.springboot.domain.member.entity.Member;
 import com.springboot.domain.toDo.entity.ToDo;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
+//@Setter
 @NoArgsConstructor
 @Entity
-public class DailyPlan {
+public class DailyPlan extends BaseTimeEntity {
 
     @Id
+    @Column(name = "DAILYPLAN_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @OneToMany(mappedBy = "dailyPlan")
-    List<ToDo> toDos = new ArrayList<>();
+    private List<ToDo> toDos = new ArrayList<>();
 
     //MONTH는 h2 예약어
     @Column(nullable = false)
     private String yearMonth;
 
     @Column(nullable = false)
-    private String date;
+    private int date;
 
     @Builder
-    public DailyPlan(String date, Member member) {
-        this.yearMonth = date.substring(0,6);
-        this.date = date;
+    public DailyPlan(Member member, String yearMonth, int date) {
         this.member = member;
+        this.yearMonth = yearMonth;
+        this.date = date;
     }
 }

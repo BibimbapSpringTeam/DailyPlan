@@ -13,17 +13,17 @@ import java.util.List;
 import static com.springboot.global.result.ResultCode.*;
 
 @RequiredArgsConstructor
-@RestController
+@RestController //프론트와 주고받을 때
 @RequestMapping("/dailyplan")
 public class DailyPlanController {
 
     private final DailyPlanService dailyPlanService;
 
-    @PostMapping("/{member_id}/{date}")
-    public ResponseEntity<ResultResponse> post(@PathVariable BigInteger member_id, String date) {
-        DailyPlanResponseDto responseDto = dailyPlanService.post(member_id, date);
+    @PostMapping("/{member_id}")
+    public ResponseEntity<ResultResponse> post(@PathVariable BigInteger member_id, @RequestParam("day") String day) {
+        Long savId = dailyPlanService.post(member_id, day);
 
-        return ResponseEntity.ok(ResultResponse.of(DAILYPLAN_SAVE_SUCCESS, responseDto.getDate()));
+        return ResponseEntity.ok(ResultResponse.of(DAILYPLAN_SAVE_SUCCESS, savId));
     }
 
     @GetMapping("/{dailyPlanId}")

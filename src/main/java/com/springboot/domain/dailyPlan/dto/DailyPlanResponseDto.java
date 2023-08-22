@@ -10,12 +10,12 @@ public class DailyPlanResponseDto {
 
     private Long id;
     private String yearMonth;
-    private String date;
+    private int date;
 
     @Builder
     public DailyPlanResponseDto(DailyPlan entity) {
         this.id = entity.getId();
         this.yearMonth = entity.getYearMonth();
-        this.date = entity.getDate().substring(6);
+        this.date = entity.getDate();
     }
 }

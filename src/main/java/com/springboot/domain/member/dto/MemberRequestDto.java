@@ -13,6 +13,7 @@ public class MemberRequestDto {
     private String email;
     private String profileUrl;
 
+    //@NoArgsConstructor로 기본생성자 생성, Builder 굳이 필요X
     @Builder
     public MemberRequestDto(String name, String email, String profileUrl) {
         this.name = name;

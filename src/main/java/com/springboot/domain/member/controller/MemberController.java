@@ -20,7 +20,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ResultResponse> post(@RequestBody MemberRequestDto requestDto) {
          MemberResponseDto responseDto = memberService.post(requestDto);
          return ResponseEntity.ok(ResultResponse.of(MEMBER_SAVE_OR_UPDATE_SUCCESS, responseDto));

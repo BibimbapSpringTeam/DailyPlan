@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.math.BigInteger.ONE;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +21,7 @@ import java.util.List;
 public class Category {
 
     @Id
+    @Column(name = "CATEGORY_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,9 +30,9 @@ public class Category {
     private Member member;
 
     @OneToMany(mappedBy = "category")
-    List<ToDo> toDos = new ArrayList<>();
+    private List<ToDo> toDos = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CategoryCode categoryCode;
 
     @Column
@@ -39,13 +42,28 @@ public class Category {
     private BigInteger successToDoCount;
 
     @Builder
-    public Category(Member member, CategoryCode categoryCode) {
+    public Category(Member member, CategoryCode categoryCode, BigInteger countByToDo, BigInteger successToDoCount) {
         this.member = member;
         this.categoryCode = categoryCode;
-        this.countByToDo = BigInteger.ONE;
-        this.successToDoCount = BigInteger.ZERO;
+        this.countByToDo = countByToDo;
+        this.successToDoCount = successToDoCount;
     }
 
+    public void plusCountByToDo(){
+        this.countByToDo.add(ONE);
+    }
+
+    public void minusCountByToDo(){
+        this.countByToDo.subtract(ONE);
+    }
+
+    public void completeToDo(){
+        this.successToDoCount.add(ONE);
+    }
+
+    public void cancelCompleteToDo(){
+        this.successToDoCount.subtract(ONE);
+    }
     public String getCodeName() {
         return categoryCode.getTitle();
     }

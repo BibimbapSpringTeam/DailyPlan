@@ -18,7 +18,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.hibernate.validator:hibernate-validator:7.0.1.Final'
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
 
     //h2
     runtimeOnly 'com.h2database:h2'
