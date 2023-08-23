@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-public interface CategoryRepository extends JpaRepository<Category, BigInteger> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findAllByMemberId(Long memberId);
 

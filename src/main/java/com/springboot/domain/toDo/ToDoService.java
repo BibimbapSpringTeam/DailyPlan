@@ -43,14 +43,14 @@ public class ToDoService {
 
         DailyPlan dailyPlan = dailyPlanRepository.findById(dailyPlanId)
                 .orElseThrow(() -> new EntityNotFoundException(DAILYPLAN_NOT_FOUND, "해당 id에 해당하는 데일리 플랜이 없습니다 : " + dailyPlanId));
-        toDo.setDailyPlan(dailyPlan);
 
         Category category = categoryService.save(requestDto.getCategoryCode(), dailyPlan.getMember());
 
+        toDo.setDailyPlan(dailyPlan);
+        toDo.setCategory(category);
 //        Member member = dailyPlan.getMember();
 //        CategoryCode code = CategoryCode.find(requestDto.getCategoryCode());
         // 카테고리 존재 확인하는 함수 -> categoryService.save함수에서 자동으로 실행됨
-//        toDo.setCategory(findCategoryFromMember(code, member));
 
         return toDoRepository.save(toDo).getId();
     }
@@ -134,14 +134,14 @@ public class ToDoService {
         Category category = toDo.getCategory();
 
         //카테고리 투두 - 1
-        category.setCountByToDo(category.getCountByToDo().subtract(BigInteger.ONE));
+        category.minusCountByToDo();
 
         //success 였을 경우 - 1
         if (toDo.isComplete()) {
-            category.setSuccessToDoCount(category.getSuccessToDoCount().subtract(BigInteger.ONE));
+            category.cancelCompleteToDo();
         }
 
-        if (category.getCountByToDo() == BigInteger.ZERO) {
+        if (category.getCountByToDo() == 0) {
             categoryRepository.delete(category);
         }
         toDoRepository.delete(toDo);
@@ -172,8 +172,7 @@ public class ToDoService {
 
 
         if(!toDo.isComplete()) {
-            Category category = toDo.getCategory();
-            category.setSuccessToDoCount(category.getSuccessToDoCount().add(BigInteger.valueOf(1)));
+            toDo.getCategory().completeToDo();
         }
         toDo.setComplete(true);
         return true;
@@ -185,7 +184,7 @@ public class ToDoService {
 
         if(toDo.isComplete()) {
             Category category = toDo.getCategory();
-            category.setSuccessToDoCount(category.getSuccessToDoCount().subtract(BigInteger.valueOf(1)));
+            category.cancelCompleteToDo();
         }
         toDo.setComplete(false);
         return true;

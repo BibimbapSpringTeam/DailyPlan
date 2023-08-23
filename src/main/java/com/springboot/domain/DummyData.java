@@ -46,8 +46,8 @@ public class DummyData {
         Category category = Category.builder()
                 .member(savedMember)
                 .categoryCode(CategoryCode.DAILY)
-                .countByToDo(BigInteger.ONE)
-                .successToDoCount(BigInteger.ZERO)
+                .countByToDo(1)
+                .successToDoCount(0)
 //                .countByChallenge(BigInteger.ZERO)
 //                .successChallengeCount(0)
                 .build();
