@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 //Getter 없으면 dto데이터를 빼서 Entity생성 불가
 @Getter
 @NoArgsConstructor
-public class MemberLogInRequestDto {
+public class MemberRequestDto {
     private String name;
     private String email;
     private String profileUrl;
 
     @Builder
-    public MemberLogInRequestDto(String name, String email, String profileUrl) {
+    public MemberRequestDto(String name, String email, String profileUrl) {
         this.name = name;
         this.email = email;
         this.profileUrl = profileUrl;

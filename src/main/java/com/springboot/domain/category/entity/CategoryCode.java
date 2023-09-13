@@ -1,7 +1,17 @@
 package com.springboot.domain.category.entity;
 
+import com.springboot.domain.category.exception.CodeNotFoundException;
+import com.springboot.global.error.exception.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.springboot.global.error.exception.ErrorCode.CATEGORYCODE_NOT_FOUND;
 
 @Getter
 @AllArgsConstructor
@@ -19,4 +29,17 @@ public enum CategoryCode {
 
     private final String title;
     private final String code;
+
+    private static final Map<String, CategoryCode> CATEGORY_CODE_MAP =
+            Collections.unmodifiableMap(Stream.of(values())
+                    .collect(Collectors.toMap(CategoryCode::getTitle, Function.identity())));
+
+    public static CategoryCode find(String title) {
+        if (CATEGORY_CODE_MAP.containsKey(title)) {
+            return CATEGORY_CODE_MAP.get(title);
+        }
+        throw new CodeNotFoundException(CATEGORYCODE_NOT_FOUND, title + "는 존재하지 않는 카테고리 코드 입니다.");
+    }
+
+
 }

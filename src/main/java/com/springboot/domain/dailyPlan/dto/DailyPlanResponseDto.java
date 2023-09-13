@@ -9,13 +9,13 @@ import lombok.Getter;
 public class DailyPlanResponseDto {
 
     private Long id;
-    private String name;
+    private String yearMonth;
     private String date;
 
     @Builder
     public DailyPlanResponseDto(DailyPlan entity) {
         this.id = entity.getId();
-        this.name = entity.getMember().getName();
-        this.date = entity.getDate();
+        this.yearMonth = entity.getYearMonth();
+        this.date = entity.getDate().substring(6);
     }
 }

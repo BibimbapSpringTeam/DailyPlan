@@ -1,37 +1,47 @@
 package com.springboot.domain.dailyPlan.controller;
 
-import com.springboot.domain.dailyPlan.dto.DailyPlanListResponseDto;
 import com.springboot.domain.dailyPlan.dto.DailyPlanResponseDto;
 import com.springboot.domain.dailyPlan.service.DailyPlanService;
+import com.springboot.global.result.ResultResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.List;
+
+import static com.springboot.global.result.ResultCode.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/dailyplan")
 public class DailyPlanController {
 
     private final DailyPlanService dailyPlanService;
 
-    @PostMapping("/dailyplan/{member_id}/{date}")
-    public Long post(@PathVariable Long member_id, String date) {
-        return dailyPlanService.post(member_id, date);
+    @PostMapping("/{member_id}/{date}")
+    public ResponseEntity<ResultResponse> post(@PathVariable BigInteger member_id, String date) {
+        DailyPlanResponseDto responseDto = dailyPlanService.post(member_id, date);
+
+        return ResponseEntity.ok(ResultResponse.of(DAILYPLAN_SAVE_SUCCESS, responseDto.getDate()));
     }
 
-    @GetMapping("/dailyplan/{dailyPlanId}")
-    public DailyPlanResponseDto get(@PathVariable Long dailyPlanId) {
-        return dailyPlanService.get(dailyPlanId);
+    @GetMapping("/{dailyPlanId}")
+    public ResponseEntity<ResultResponse> get(@PathVariable Long dailyPlanId) {
+        DailyPlanResponseDto responseDto = dailyPlanService.get(dailyPlanId);
+
+        return ResponseEntity.ok(ResultResponse.of(GET_DAILYPLAN_SUCCESS, responseDto));
     }
 
-    @DeleteMapping("/dailyplan/{dailyPlanId}")
-    public Long delete(@PathVariable Long dailyPlanId) {
-        dailyPlanService.delete(dailyPlanId);
-        return dailyPlanId;
+    @DeleteMapping("/{dailyPlanId}")
+    public ResponseEntity<ResultResponse> delete(@PathVariable Long dailyPlanId) {
+        return ResponseEntity.ok(ResultResponse.of(DELETE_DAILPLAN_SUCCESS, dailyPlanService.delete(dailyPlanId)));
     }
 
-    @GetMapping("/dailyplan/{memberId}/{yearMonth}")
-    public List<DailyPlanListResponseDto> getList(@PathVariable Long memberId, @PathVariable String yearMonth) {
-        return dailyPlanService.getList(memberId, yearMonth);
+    @GetMapping("/{memberId}/{yearMonth}")
+    public ResponseEntity<ResultResponse> getList(@PathVariable BigInteger memberId, @PathVariable String yearMonth) {
+        List<DailyPlanResponseDto> responseDto = dailyPlanService.getList(memberId, yearMonth);
+
+        return ResponseEntity.ok(ResultResponse.of(GET_MONTH_DAILYPLAN_SUCCESS, responseDto));
     }
 }
