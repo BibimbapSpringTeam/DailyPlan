@@ -27,7 +27,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<CategoryResponseDto> getAllList(BigInteger memberId) {
+    public List<CategoryResponseDto> getAllList(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
@@ -44,7 +44,7 @@ public class CategoryService {
         return list;
     }
 
-    public List<CategoryResponseDto> getBest3(BigInteger memberId) {
+    public List<CategoryResponseDto> getBest3(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
@@ -62,7 +62,7 @@ public class CategoryService {
         return list;
     }
 
-    public List<CategoryResponseDto> getWorst3(BigInteger memberId) {
+    public List<CategoryResponseDto> getWorst3(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 

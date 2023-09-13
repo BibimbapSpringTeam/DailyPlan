@@ -23,7 +23,7 @@ public class Member extends BaseTimeEntity {
     @Id
     @Column(name = "MEMBER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @OneToMany(mappedBy = "member")
     private List<Category> categories = new ArrayList<>();
@@ -45,12 +45,15 @@ public class Member extends BaseTimeEntity {
 
     private long planSuccessCount;
 
+    private String firebaseToken;
+
     @Builder
-    public Member(String name, String email, String profileUrl, int planSuccessCount) {
+    public Member(String name, String email, String profileUrl, int planSuccessCount, String firebaseToken) {
         this.name = name;
         this.email = email;
         this.profileUrl = profileUrl;
         this.planSuccessCount = planSuccessCount;
+        this.firebaseToken = firebaseToken;
     }
 
     public Member update(String name, String picture){

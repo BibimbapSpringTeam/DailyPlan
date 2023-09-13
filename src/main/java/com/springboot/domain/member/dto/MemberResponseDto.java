@@ -8,7 +8,7 @@ import java.math.BigInteger;
 
 @Getter
 public class MemberResponseDto {
-    private BigInteger id;
+    private Long id;
     private String name;
     private String email;
     private String profileUrl;

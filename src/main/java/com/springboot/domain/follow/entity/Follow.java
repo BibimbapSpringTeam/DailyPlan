@@ -22,11 +22,15 @@ public class Follow {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    //팔로우한 멤버 id..?
+    @ManyToOne
+    @JoinColumn(name = "FOLLOW_MEMBER_ID")
+    private Member followMember;
 
     @Builder
-    public Follow(Long id) {
-        this.id = id;
+    public Follow(Member member, Member followMember)
+    {
+        this.member = member;
+        this.followMember = followMember;
     }
 
 }

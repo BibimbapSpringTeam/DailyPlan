@@ -15,6 +15,7 @@ public enum ResultCode {
     GET_EDIT_PROFILE_SUCCESS(200, "M008", "회원 프로필 수정정보를 조회하였습니다."),
     EDIT_PROFILE_SUCCESS(200, "M009", "회원 프로필을 수정하였습니다."),
     LOGOUT_SUCCESS(200, "M020", "로그아웃하였습니다."),
+    SAVE_OR_UPDATE_FIREBASE_TOKEN_SUCCESS(200, "M021", "firebaseToken을 update 완료하였습니다."),
 
     // DailyPlan
     DAILYPLAN_SAVE_SUCCESS(200, "D001", "데일리 플랜을 저장했습니다"),
@@ -36,7 +37,13 @@ public enum ResultCode {
     GET_BEST3_TODO_SUCCESS(200, "CT002", "달성률 베스트 3 투두를 조회하였습니다"),
     GET_WORST3_TODO_SUCCESS(200, "CT002", "달성률 워스트 3 투두를 플랜을 조회하였습니다"),
 
+    //Follow
+    FOLLOW_SUCCESS(200, "F001", "팔로우를 성공했습니다."),
+    GET_FOLLOWING_LIST_SUCCESS(200, "F002", "팔로잉을 조회하였습니다."),
+    GET_FOLLOWER_LIST_SUCCESS(200, "F003", "팔로워를 조회하였습니다."),
+    UNFOLLOW_SUCCESS(200, "F004", "언팔로우를 성공했습니다."),
     ;
+
     private final int status;
     private final String code;
     private final String message;

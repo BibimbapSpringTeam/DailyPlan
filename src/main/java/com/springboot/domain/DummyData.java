@@ -26,15 +26,24 @@ public class DummyData {
 
     @PostConstruct
     public void init() {
-        Member member = Member.builder()
+        Member member1 = Member.builder()
                 .name("John Doe")
                 .email("john@example.com")
                 .profileUrl("profile.jpg")
                 .planSuccessCount(10)
 //                .challengeSuccessCount(5)
-//                .firebaseToken("firebaseToken")
+                .firebaseToken("caZJbB4hS1uirQ0HiYaKvB:APA91bFWcND0BTRoDudm4r_TMZxu0WSZTajSdvrfn2fSc4wOjQ5mkzrvd8kMVYb7L65lbCHE8MutNrTfHwLKT4TsPRK_Stdh7iWhDW80p3hF_DmEGarzAx7f8B9j_sMFv1tjnpLjCQsd")
                 .build();
-        Member savedMember = memberRepository.save(member);
+        Member savedMember = memberRepository.save(member1);
+
+        memberRepository.save(Member.builder()
+                .name("Sean Kim")
+                .email("seankim0@naver.com")
+                .profileUrl("Kim.jpg")
+                .planSuccessCount(15)
+//                .challengeSuccessCount(5)
+                .firebaseToken("c5HynNSxStSNR8AcTwgl1A:APA91bEqS2NL_9EWXK-RPliC7TCk7cv1Q86RcSVvO7yCXmouMf4-0cTE5nCsFnryS7CpgQj0BnnWIYo2Ogx-1yaYSK_4x6DQdS2WYas3rc55Y-3BYkRrGuRkXHh5fqfr6ttNez6SlwQe")
+                .build());
 
         DailyPlan dailyPlan = DailyPlan.builder()
                 .member(savedMember)

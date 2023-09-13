@@ -20,7 +20,7 @@ public class DailyPlanController {
     private final DailyPlanService dailyPlanService;
 
     @PostMapping("/{member_id}")
-    public ResponseEntity<ResultResponse> post(@PathVariable BigInteger member_id, @RequestParam("day") String day) {
+    public ResponseEntity<ResultResponse> post(@PathVariable Long member_id, @RequestParam("day") String day) {
         Long savId = dailyPlanService.post(member_id, day);
 
         return ResponseEntity.ok(ResultResponse.of(DAILYPLAN_SAVE_SUCCESS, savId));
@@ -39,7 +39,7 @@ public class DailyPlanController {
     }
 
     @GetMapping("/{memberId}/{yearMonth}")
-    public ResponseEntity<ResultResponse> getList(@PathVariable BigInteger memberId, @PathVariable String yearMonth) {
+    public ResponseEntity<ResultResponse> getList(@PathVariable Long memberId, @PathVariable String yearMonth) {
         List<DailyPlanResponseDto> responseDto = dailyPlanService.getList(memberId, yearMonth);
 
         return ResponseEntity.ok(ResultResponse.of(GET_MONTH_DAILYPLAN_SUCCESS, responseDto));

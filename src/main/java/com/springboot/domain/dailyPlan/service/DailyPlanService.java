@@ -29,7 +29,7 @@ public class DailyPlanService {
     private final int DAY_START_INDEX = 6;
     private final int DATE_END_INDEX = 8;
     @Transactional
-    public Long post(BigInteger memberId, String day) {
+    public Long post(Long memberId, String day) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
@@ -64,7 +64,7 @@ public class DailyPlanService {
     }
 
     @Transactional
-    public List<DailyPlanResponseDto> getList(BigInteger memberId, String yearMonth) {
+    public List<DailyPlanResponseDto> getList(Long memberId, String yearMonth) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
