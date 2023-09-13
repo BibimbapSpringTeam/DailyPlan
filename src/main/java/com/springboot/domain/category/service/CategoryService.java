@@ -2,11 +2,13 @@ package com.springboot.domain.category.service;
 
 import com.springboot.domain.category.dto.CategoryResponseDto;
 import com.springboot.domain.category.entity.Category;
+import com.springboot.domain.category.entity.CategoryCode;
 import com.springboot.domain.category.entity.CategoryRepository;
 import com.springboot.domain.category.exception.CategoryListNotFoundException;
 import com.springboot.domain.member.entity.Member;
 import com.springboot.domain.member.entity.MemberRepository;
 import com.springboot.global.error.exception.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.springboot.global.error.exception.ErrorCode.CATEGORYLIST_NOT_FOUND;
-import static com.springboot.global.error.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.springboot.global.error.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -26,7 +27,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<CategoryResponseDto> getAllList(BigInteger memberId) {
+    public List<CategoryResponseDto> getAllList(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
@@ -43,7 +44,7 @@ public class CategoryService {
         return list;
     }
 
-    public List<CategoryResponseDto> getBest3(BigInteger memberId) {
+    public List<CategoryResponseDto> getBest3(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
@@ -61,7 +62,7 @@ public class CategoryService {
         return list;
     }
 
-    public List<CategoryResponseDto> getWorst3(BigInteger memberId) {
+    public List<CategoryResponseDto> getWorst3(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
 
@@ -78,6 +79,33 @@ public class CategoryService {
         }
         return list;
     }
+    @Transactional
+    public Category save(String categoryCode, Member member) {
+
+        Category category = categoryRepository.findByMemberIdAndCategoryCode(member.getId(), CategoryCode.find(categoryCode))
+                .orElse(Category.builder()
+                        .categoryCode(CategoryCode.find(categoryCode))
+                        .build());
+
+        category.plusCountByToDo();
+
+        category.setMember(member);
+        return categoryRepository.save(category);
+    }
 
 
+    @Transactional
+    public Category update(Category category, String afterCategoryCode) {
+        Member member = category.getMember();
+
+        Category newCategory = Category.builder()
+                .categoryCode(CategoryCode.find(afterCategoryCode))
+                .build();
+
+        newCategory.plusCountByToDo();
+        category.minusCountByToDo();
+
+        newCategory.setMember(member);
+        return categoryRepository.save(newCategory);
+    }
 }

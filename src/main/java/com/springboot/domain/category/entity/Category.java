@@ -12,13 +12,16 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
+
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 public class Category {
 
     @Id
+    @Column(name = "CATEGORY_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,25 +30,44 @@ public class Category {
     private Member member;
 
     @OneToMany(mappedBy = "category")
-    List<ToDo> toDos = new ArrayList<>();
+    private List<ToDo> toDos = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CategoryCode categoryCode;
 
     @Column
-    private BigInteger countByToDo;
+    private int countByToDo;
 
     @Column
-    private BigInteger successToDoCount;
+    private int successToDoCount;
 
     @Builder
-    public Category(Member member, CategoryCode categoryCode) {
+    public Category(Member member, CategoryCode categoryCode, int countByToDo, int successToDoCount) {
         this.member = member;
         this.categoryCode = categoryCode;
-        this.countByToDo = BigInteger.ONE;
-        this.successToDoCount = BigInteger.ZERO;
+        this.countByToDo = countByToDo;
+        this.successToDoCount = successToDoCount;
     }
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void plusCountByToDo(){
+        this.countByToDo += 1;
+    }
+
+    public void minusCountByToDo(){
+        this.countByToDo -= 1;
+    }
+
+    public void completeToDo(){
+        this.successToDoCount += 1;
+    }
+
+    public void cancelCompleteToDo(){
+        this.successToDoCount -= 1;
+    }
     public String getCodeName() {
         return categoryCode.getTitle();
     }

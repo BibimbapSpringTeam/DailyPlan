@@ -26,19 +26,19 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/list/{memberId}")
-    public ResponseEntity<ResultResponse> getCategoryList(@PathVariable BigInteger memberId) {
+    public ResponseEntity<ResultResponse> getCategoryList(@PathVariable Long memberId) {
         List<CategoryResponseDto> responseDto = categoryService.getAllList(memberId);
         return ResponseEntity.ok(ResultResponse.of(GET_CATEGORY_LIST_SUCCESS, responseDto));
     }
 
     @GetMapping("/best3/{memberId}")
-    public ResponseEntity<ResultResponse> getBest3(@PathVariable BigInteger memberId) {
+    public ResponseEntity<ResultResponse> getBest3(@PathVariable Long memberId) {
         List<CategoryResponseDto> responseDto = categoryService.getBest3(memberId);
         return ResponseEntity.ok(ResultResponse.of(GET_BEST3_TODO_SUCCESS, responseDto));
     }
 
     @GetMapping("/worst3/{memberId}")
-    public ResponseEntity<ResultResponse> getWorst3(@PathVariable BigInteger memberId) {
+    public ResponseEntity<ResultResponse> getWorst3(@PathVariable Long memberId) {
         List<CategoryResponseDto> responseDto = categoryService.getWorst3(memberId);
         return ResponseEntity.ok(ResultResponse.of(GET_WORST3_TODO_SUCCESS, responseDto));
     }

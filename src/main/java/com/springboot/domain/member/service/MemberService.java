@@ -1,5 +1,6 @@
 package com.springboot.domain.member.service;
 
+import com.springboot.domain.member.dto.MemberFirebaseTokenRequestDto;
 import com.springboot.domain.member.dto.MemberRequestDto;
 import com.springboot.domain.member.dto.MemberResponseDto;
 import com.springboot.domain.member.entity.Member;
@@ -19,15 +20,20 @@ public class MemberService {
     private final MemberRepository memberRepository;
     @Transactional
     public MemberResponseDto post(MemberRequestDto requestDto) {
-        return new MemberResponseDto(memberRepository.save(requestDto.toEntity()));
+        Member member = memberRepository.findByEmail(requestDto.getEmail())
+                .map(entity -> entity.update(requestDto.getName(), requestDto.getProfileUrl()))
+                .orElse(requestDto.toEntity());
+
+        return MemberResponseDto.builder()
+                .entity(memberRepository.save(member))
+                .build();
     }
 
     @Transactional
-    public MemberResponseDto get(BigInteger memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id를 가진 member가 없습니다. id=" + memberId));
-
-        return new MemberResponseDto(member);
+    public MemberResponseDto get(Long memberId) {
+        return memberRepository.findById(memberId)
+                .map(MemberResponseDto::new)
+                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 id의 유저가 없습니다 : " + memberId));
     }
 
     @Transactional
@@ -36,5 +42,13 @@ public class MemberService {
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 email을 가진 member가 없습니다. email=" + email));
 
         return new MemberResponseDto(member);
+    }
+
+    @Transactional
+    public boolean saveOrUpdateFireBaseTokenByMemberId(Long memberId, MemberFirebaseTokenRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND, "해당 멤버가 존재하지 않습니다 : " + memberId));
+        member.setFirebaseToken(requestDto.getFirebaseToken());
+        return true;
     }
 }

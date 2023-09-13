@@ -1,5 +1,6 @@
 package com.springboot.domain.member.entity;
 
+import com.springboot.domain.BaseTimeEntity;
 import com.springboot.domain.category.entity.Category;
 import com.springboot.domain.dailyPlan.entity.DailyPlan;
 import com.springboot.domain.follow.entity.Follow;
@@ -17,20 +18,21 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
+    @Column(name = "MEMBER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @OneToMany(mappedBy = "member")
-    List<Category> categories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<DailyPlan> dailyPlans = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    List<DailyPlan> dailyPlans = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    List<Follow> follows = new ArrayList<>();
+    private List<Follow> follows = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;
@@ -43,10 +45,20 @@ public class Member {
 
     private long planSuccessCount;
 
+    private String firebaseToken;
+
     @Builder
-    public Member(String name, String email, String profileUrl) {
+    public Member(String name, String email, String profileUrl, int planSuccessCount, String firebaseToken) {
         this.name = name;
         this.email = email;
         this.profileUrl = profileUrl;
+        this.planSuccessCount = planSuccessCount;
+        this.firebaseToken = firebaseToken;
+    }
+
+    public Member update(String name, String picture){
+        this.name = name;
+        this.profileUrl = picture;
+        return this;
     }
 }

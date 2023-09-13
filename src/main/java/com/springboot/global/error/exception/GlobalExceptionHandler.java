@@ -17,4 +17,12 @@ public class GlobalExceptionHandler {
         errorResponse.setDetail(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
     }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handleFirebaseMessagingException(FirebaseMessagingException e) {
+        ErrorCode errorCode = ErrorCode.PUSH_NOTIFICATION_FAIL;
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode, LocalDateTime.now());
+        errorResponse.setDetail(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getStatus()));
+    }
 }

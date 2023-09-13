@@ -17,9 +17,9 @@ public class CategoryResponseDto {
 
     private String code;
 
-    private BigInteger countByToDo;
+    private int countByToDo;
 
-    private BigInteger successToDoCount;
+    private int successToDoCount;
 
     @Builder
     public CategoryResponseDto(Category entity) {

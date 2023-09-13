@@ -32,6 +32,14 @@ public enum ErrorCode {
     //Category
     CATEGORYCODE_NOT_FOUND(400, "C001", "존재 하지 않는 카테고리입니다."),
     CATEGORYLIST_NOT_FOUND(400, "C002", "카테고리 리스트가 존재하지 않습니다."),
+
+    //Firebase
+    TOKEN_NOT_FOUND(400, "F001", "존재 하지 않는 토큰입니다"),
+    PUSH_NOTIFICATION_FAIL(400, "F002", "메세지 발송에 실패했습니다."),
+
+    //Follow
+    FOLLOW_ALREADY_EXIST(400, "FL001", "이미 팔로우 하셨습니다."),
+    FOLLOW_LIST_NOT_FOUND(400, "FL002", "팔로우 리스트가 존재하지 않습니다."),
     ;
 
     private final int status;

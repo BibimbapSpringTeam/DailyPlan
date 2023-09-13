@@ -1,5 +1,6 @@
 package com.springboot.domain.member.controller;
 
+import com.springboot.domain.member.dto.MemberFirebaseTokenRequestDto;
 import com.springboot.domain.member.dto.MemberRequestDto;
 import com.springboot.domain.member.dto.MemberResponseDto;
 import com.springboot.domain.member.service.MemberService;
@@ -20,14 +21,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ResultResponse> post(@RequestBody MemberRequestDto requestDto) {
          MemberResponseDto responseDto = memberService.post(requestDto);
          return ResponseEntity.ok(ResultResponse.of(MEMBER_SAVE_OR_UPDATE_SUCCESS, responseDto));
     }
 
     @GetMapping("/{member_id}")
-    public ResponseEntity<ResultResponse> get(@PathVariable BigInteger member_id) {
+    public ResponseEntity<ResultResponse> get(@PathVariable Long member_id) {
         MemberResponseDto responseDto = memberService.get(member_id);
         return ResponseEntity.ok(ResultResponse.of(GET_USERPROFILE_SUCCESS, responseDto));
     }
@@ -38,6 +39,12 @@ public class MemberController {
         return ResponseEntity.ok(ResultResponse.of(GET_USERPROFILE_SUCCESS, responseDto));
     }
 
+    @PostMapping("/firebaseToken/{memberId}")
+    public ResponseEntity<ResultResponse> saveOrUpdateFirebaseToken(@PathVariable Long memberId, @RequestBody MemberFirebaseTokenRequestDto requestDto) {
+        boolean isSave = memberService.saveOrUpdateFireBaseTokenByMemberId(memberId, requestDto);
+
+        return ResponseEntity.ok(ResultResponse.of(SAVE_OR_UPDATE_FIREBASE_TOKEN_SUCCESS, isSave));
+    }
 }
 
 
